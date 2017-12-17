@@ -1,31 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, {Component} from 'react'
+import ReactDOM from 'react-dom'
+import YTSearch from 'youtube-api-search'
                       // ./ mean in the current directory go components ...
-import SearchBar from './components/search_bar';
+import SearchBar from './components/search_bar'
+import VideoList from './components/video_list'
 
 const API_KEY = 'AIzaSyCAFOyZ3z4eBAg35LfOuDWGM2SvBSdBvyM'
 
-// import { Provider } from 'react-redux';
-// import { createStore, applyMiddleware } from 'redux';
+class App extends Component {
+  constructor(props) {
+    super(props)
 
-// import App from './components/app';
-// import reducers from './reducers';
+    this.state = { videos: [] }
 
-// const createStoreWithMiddleware = applyMiddleware()(createStore);
+    YTSearch({key: API_KEY, term: 'surfboards'}, (videos) => {
+      this.setState({ videos })
+    })
+  }
 
-// ReactDOM.render(
-//   <Provider store={createStoreWithMiddleware(reducers)}>
-//     <App />
-//   </Provider>
-//   , document.querySelector('.container'));
-
-// Create new component that will produce html
-const App = () => {
-  return (
-    <div>
-      <SearchBar />
-    </div>
-  ) 
+  render() {
+    return (
+      <div>
+        <SearchBar />
+        <VideoList videos={this.state.videos} />
+      </div>
+    )
+  }
 }
 
 // React take this component and put it in the DOM
